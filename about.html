@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - University of Excellence</title>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+  
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header and Navigation */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .top-header {
+            background-color: #0c3064;
+            padding: 10px 0;
+            color: #fff;
+        }
+        
+        .top-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .top-header .contact-info {
+            font-size: 14px;
+        }
+        
+        .top-header .social-links a {
+            color: #fff;
+            margin-left: 15px;
+            text-decoration: none;
+        }
+        
+        .main-header {
+            padding: 20px 0;
+        }
+        
+        .main-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0c3064;
+            text-decoration: none;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+            position: relative;
+        }
+        
+        nav ul li a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding-bottom: 5px;
+        }
+        
+        nav ul li a:hover {
+            color: #0c3064;
+        }
+        
+        nav ul li a.active {
+            border-bottom: 2px solid #0c3064;
+            color: #0c3064;
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #fff;
+            width: 220px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 10px 0;
+            z-index: 100;
+        }
+
+        nav ul li:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(10px);
+        }
+
+        .dropdown-menu li {
+            margin: 0;
+            padding: 0;
+        }
+
+        .dropdown-menu li a {
+            padding: 12px 25px;
+            display: block;
+            color: #333;
+            font-size: 0.95em;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: #f8f9fa;
+            color: #0c3064;
+            border-left: 3px solid #0c3064;
+            padding-left: 30px;
+        }
+        
+        .search-icon, .login-btn, .menu-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #333;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+        
+        .search-icon:hover, .login-btn:hover {
+            color: #0c3064;
+        }
+        
+        .mobile-menu {
+            display: none;
+        }
+        
+        .menu-toggle {
+            display: none;
+        }
+        
+        /* About Page Specific Styles */
+        .about-hero {
+            height: 50vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                        url('/api/placeholder/1200/400') no-repeat center center/cover;
+            margin-top: 120px;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+        }
+
+        .about-section {
+            padding: 80px 0;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-image {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .about-content h2 {
+            color: #0c3064;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .key-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .feature-icon {
+            background: #0c3064;
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .stats-section {
+            background-color: #f5f5f5;
+            padding: 60px 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            color: #0c3064;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .key-features {
+                grid-template-columns: 1fr;
+            }
+        }
+        footer {
+            background-color: #0c3064;
+            color: #fff;
+            padding: 60px 0 0;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        
+        .footer-column p {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+        
+        .footer-social {
+            display: flex;
+            margin-top: 20px;
+        }
+        
+        .footer-social a {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .footer-social a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .footer-bottom {
+            background-color: #092550;
+            padding: 20px 0;
+            text-align: center;
+        }
+        
+        .footer-bottom p {
+            margin: 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header (Copy from index.html) -->
+    // ...existing header code...
+    <header>
+        <div class="top-header">
+            <div class="container">
+                <div class="contact-info">
+                    <span>Email: info@universityofexcellence.edu</span>
+                    <span>|</span>
+                    <span>Phone: +44 (0)123 456 7890</span>
+                </div>
+                <div class="social-links">
+                    <a href="#">Facebook</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">Instagram</a>
+                    <a href="#">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+        <div class="main-header">
+            <div class="container">
+                <a href="#" class="logo">University of Excellence</a>
+                <nav class="desktop-menu">
+                    <ul>
+                        <li><a href="./index.html" class="active">Home</a></li>
+                        <li>
+                            <a href="./about.html">About</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="./about/history.html">Our History</a></li>
+                                <li><a href="./about/leadership.html">Leadership</a></li>
+                                <li><a href="./about/mission.html">Mission & Vision</a></li>
+                                <li><a href="./about/campus-life.html">Campus Life</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="./admissions/international.html">Admissions</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="./admissions/undergraduate.html">Undergraduate</a></li>
+                                <li><a href="./admissions/postgraduate.html">Postgraduate</a></li>
+                                <li><a href="./admissions/international.html">International</a></li>
+                                <li><a href="./admissions/scholarships.html">Scholarships</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Research</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="./research/areas.html">Research Areas</a></li>
+                                <li><a href="./research/facilities.html">Facilities</a></li>
+                                <li><a href="./research/publications.html">Publications</a></li>
+                                <li><a href="./research/partnerships.html">Partnerships</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Courses</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="./courses/undergraduate.html">Undergraduate Courses</a></li>
+                                <li><a href="./courses/postgraduate.html">Postgraduate Courses</a></li>
+                                <li><a href="./courses/short-courses.html">Short Courses</a></li>
+                                <li><a href="./courses/distance-learning.html">Distance Learning</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="./student-life.html">Student Life</a></li>
+                        <li><a href="./contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="header-buttons">
+                    <button class="search-icon">Search</button>
+                    <button class="login-btn">Login</button>
+                    <button class="menu-toggle">Menu</button>
+                </div>
+                <nav class="mobile-menu">
+                    <ul>
+                        <li><a href="./index.html" class="active">Home</a></li>
+                        <li><a href="./about.html">About</a></li>
+                        <li><a href="./admissions/international.html">Admissions</a></li>
+                        <li><a href="./research/areas.html">Research</a></li>
+                        <li><a href="./courses/distance-learning.html">Courses</a></li>
+                        <li><a href="./student-life.html">Student Life</a></li>
+                        <li><a href="./contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- About Hero Section -->
+    <section class="about-hero">
+        <div class="container">
+            <h1>About Our University</h1>
+            <p>Shaping Minds, Building Futures</p>
+        </div>
+    </section>
+
+    <!-- Main About Section -->
+    <section class="about-section">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-content">
+                    <h2>Excellence in Education Since 1965</h2>
+                    <p>The University of Excellence has been a pioneer in higher education for over five decades. We combine academic excellence with innovative research and industry partnerships to provide our students with unparalleled opportunities.</p>
+                    
+                    <div class="key-features">
+                        <div class="feature-item">
+                            <div class="feature-icon">🎓</div>
+                            <div>
+                                <h3>World-Class Faculty</h3>
+                                <p>Learn from leading experts and researchers in their fields.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🔬</div>
+                            <div>
+                                <h3>Research Excellence</h3>
+                                <p>Cutting-edge research facilities and opportunities.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🌍</div>
+                            <div>
+                                <h3>Global Perspective</h3>
+                                <p>International partnerships and diverse community.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">💼</div>
+                            <div>
+                                <h3>Industry Connections</h3>
+                                <p>Strong ties with leading companies and organizations.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="/api/placeholder/600/800" alt="University Campus">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>25,000+</h3>
+                    <p>Students</p>
+                </div>
+                <div class="stat-item">
+                    <h3>2,000+</h3>
+                    <p>Faculty Members</p>
+                </div>
+                <div class="stat-item">
+                    <h3>150+</h3>
+                    <p>Research Centers</p>
+                </div>
+                <div class="stat-item">
+                    <h3>95%</h3>
+                    <p>Graduate Employment</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (Copy from index.html) -->
+      <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>University of Excellence</h3>
+                    <p>Shaping the future through education, research, and innovation.</p>
+                    <div class="footer-social">
+                        <a href="#">F</a>
+                        <a href="#">T</a>
+                        <a href="#">I</a>
+                        <a href="#">L</a>
+                        <a href="#">Y</a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="./about.html">About Us</a></li>
+                        <li><a href="./admission.html">Admissions</a></li>
+                        <li><a href="./research/areas.html">Research</a></li>
+                        <li><a href="./courses/distance-learning.html">Courses</a></li>
+                        <li><a href="./student-life.html">Student Life</a></li>
+                        <li><a href="./contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <p>123 University Avenue<br>Excellence City, EX1 2YZ<br>United Kingdom</p>
+                    <p>Email: info@universityofexcellence.edu<br>Phone: +44 (0)123 456 7890</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to our newsletter for the latest updates.</p>
+                    <form>
+                        <input type="email" placeholder="Your Email" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                        <button type="submit" class="btn" style="width: 100%;">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2025 University of Excellence. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals (Copy from index.html) -->
+    // ...existing modal code...
+
+    <!-- Scripts (Copy from index.html) -->
+    // ...existing script code...
+</body>
+</html>

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Partnerships - University of Excellence</title>
+    <style>
+  * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header and Navigation */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .top-header {
+            background-color: #0c3064;
+            padding: 10px 0;
+            color: #fff;
+        }
+        
+        .top-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .top-header .contact-info {
+            font-size: 14px;
+        }
+        
+        .top-header .social-links a {
+            color: #fff;
+            margin-left: 15px;
+            text-decoration: none;
+        }
+        
+        .main-header {
+            padding: 20px 0;
+        }
+        
+        .main-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0c3064;
+            text-decoration: none;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+            position: relative;
+        }
+        
+        nav ul li a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding-bottom: 5px;
+        }
+        
+        nav ul li a:hover {
+            color: #0c3064;
+        }
+        
+        nav ul li a.active {
+            border-bottom: 2px solid #0c3064;
+            color: #0c3064;
+        }
+        
+        /* Updated Dropdown Menu Styles */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #fff;
+            width: 220px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 10px 0;
+            z-index: 100;
+        }
+
+        nav ul li:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(10px);
+        }
+
+        .dropdown-menu li {
+            margin: 0;
+            padding: 0;
+        }
+
+        .dropdown-menu li a {
+            padding: 12px 25px;
+            display: block;
+            color: #333;
+            font-size: 0.95em;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: #f8f9fa;
+            color: #0c3064;
+            border-left: 3px solid #0c3064;
+            padding-left: 30px;
+        }
+        
+        .search-icon, .login-btn, .menu-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #333;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+        
+        .search-icon:hover, .login-btn:hover {
+            color: #0c3064;
+        }
+        
+        .mobile-menu {
+            display: none;
+        }
+        
+        .menu-toggle {
+            display: none;
+        }
+
+        .partnerships-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .partner-card {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .partner-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .partner-logo {
+            height: 200px;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .partner-logo img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+        }
+
+        .partner-content {
+            padding: 25px;
+        }
+
+        .partnership-type {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #e8f0fe;
+            color: #0c3064;
+            border-radius: 15px;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        .collaboration-highlights {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .highlight-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .highlight-icon {
+            color: #0c3064;
+            font-size: 1.2em;
+        }
+        footer {
+            background-color: #0c3064;
+            color: #fff;
+            padding: 60px 0 0;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        
+        .footer-column p {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+        
+        .footer-social {
+            display: flex;
+            margin-top: 20px;
+        }
+        
+        .footer-social a {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .footer-social a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .footer-bottom {
+            background-color: #092550;
+            padding: 20px 0;
+            text-align: center;
+        }
+        
+        .footer-bottom p {
+            margin: 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="top-header">
+            <div class="container">
+                <div class="contact-info">
+                    <span>Email: info@universityofexcellence.edu</span>
+                    <span>|</span>
+                    <span>Phone: +44 (0)123 456 7890</span>
+                </div>
+                <div class="social-links">
+                    <a href="#">Facebook</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">Instagram</a>
+                    <a href="#">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+        <div class="main-header">
+            <div class="container">
+                <a href="#" class="logo">University of Excellence</a>
+                <nav class="desktop-menu">
+                    <ul>
+                        <li><a href="./index.html" class="active">Home</a></li>
+                        <li>
+                            <a href="./about.html">About</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="./about/history.html">Our History</a></li>
+                                <li><a href="./about/leadership.html">Leadership</a></li>
+                                <li><a href="./about/mission.html">Mission & Vision</a></li>
+                                <li><a href="./about/campus-life.html">Campus Life</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="./admissions/international.html">Admissions</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="./admissions/undergraduate.html">Undergraduate</a></li>
+                                <li><a href="./admissions/postgraduate.html">Postgraduate</a></li>
+                                <li><a href="./admissions/international.html">International</a></li>
+                                <li><a href="./admissions/scholarships.html">Scholarships</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Research</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="./research/areas.html">Research Areas</a></li>
+                                <li><a href="./research/facilities.html">Facilities</a></li>
+                                <li><a href="./research/publications.html">Publications</a></li>
+                                <li><a href="./research/partnerships.html">Partnerships</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Courses</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="./courses/undergraduate.html">Undergraduate Courses</a></li>
+                                <li><a href="./courses/postgraduate.html">Postgraduate Courses</a></li>
+                                <li><a href="./courses/short-courses.html">Short Courses</a></li>
+                                <li><a href="./courses/distance-learning.html">Distance Learning</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="./student-life.html">Student Life</a></li>
+                        <li><a href="./contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="header-buttons">
+                    <button class="search-icon">Search</button>
+                    <button class="login-btn">Login</button>
+                    <button class="menu-toggle">Menu</button>
+                </div>
+                <nav class="mobile-menu">
+                    <ul>
+                        <li><a href="./index.html" class="active">Home</a></li>
+                        <li><a href="./about.html">About</a></li>
+                        <li><a href="./admissions/international.html">Admissions</a></li>
+                        <li><a href="./research/areas.html">Research</a></li>
+                        <li><a href="./courses/distance-learning.html">Courses</a></li>
+                        <li><a href="./student-life.html">Student Life</a></li>
+                        <li><a href="./contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Partnerships Hero Section -->
+    <section class="page-hero">
+        <div class="container">
+            <h1>Research Partnerships</h1>
+            <p>Collaborating for Innovation and Impact</p>
+        </div>
+    </section>
+
+    <!-- Partnerships Section -->
+    <section class="partnerships-section">
+        <div class="container">
+            <div class="partnerships-grid">
+                <div class="partner-card">
+                    <div class="partner-logo">
+                        <img src="/api/placeholder/200/100" alt="Tech Corp Logo">
+                    </div>
+                    <div class="partner-content">
+                        <span class="partnership-type">Industry Partner</span>
+                        <h3>Tech Corp International</h3>
+                        <p>Strategic partnership in AI and Machine Learning research.</p>
+                        <div class="collaboration-highlights">
+                            <div class="highlight-item">
+                                <span class="highlight-icon">🔬</span>
+                                <span>Joint Research Lab</span>
+                            </div>
+                            <div class="highlight-item">
+                                <span class="highlight-icon">👥</span>
+                                <span>Student Internships</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add more partner cards -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+    <script src="/js/include.js"></script>
+</body>
+</html>

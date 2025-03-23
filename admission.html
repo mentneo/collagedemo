@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admission Application - University of Excellence</title>
+    <style>
+       
+       header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .top-header {
+            background-color: #0c3064;
+            padding: 10px 0;
+            color: #fff;
+        }
+        
+        .top-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .top-header .contact-info {
+            font-size: 14px;
+        }
+        
+        .top-header .social-links a {
+            color: #fff;
+            margin-left: 15px;
+            text-decoration: none;
+        }
+        
+        .main-header {
+            padding: 20px 0;
+        }
+        
+        .main-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0c3064;
+            text-decoration: none;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+            position: relative;
+        }
+        
+        nav ul li a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding-bottom: 5px;
+        }
+        
+        nav ul li a:hover {
+            color: #0c3064;
+        }
+        
+        nav ul li a.active {
+            border-bottom: 2px solid #0c3064;
+            color: #0c3064;
+        }
+        
+        /* Updated Dropdown Menu Styles */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #fff;
+            width: 220px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 10px 0;
+            z-index: 100;
+        }
+
+        nav ul li:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(10px);
+        }
+
+        .dropdown-menu li {
+            margin: 0;
+            padding: 0;
+        }
+
+        .dropdown-menu li a {
+            padding: 12px 25px;
+            display: block;
+            color: #333;
+            font-size: 0.95em;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: #f8f9fa;
+            color: #0c3064;
+            border-left: 3px solid #0c3064;
+            padding-left: 30px;
+        }
+        
+        .search-icon, .login-btn, .menu-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #333;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+        
+        .search-icon:hover, .login-btn:hover {
+            color: #0c3064;
+        }
+        
+        .mobile-menu {
+            display: none;
+        }
+        
+        .menu-toggle {
+            display: none;
+        }
+        
+        
+        .admission-form-container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-progress {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            color: #666;
+            position: relative;
+            z-index: 2;
+        }
+
+        .progress-step.active .step-number {
+            background: #0c3064;
+            color: #fff;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e0e0e0;
+            z-index: 0;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .file-upload {
+            border: 2px dashed #ddd;
+            padding: 20px;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .btn-next {
+            background: #0c3064;
+            color: #fff;
+        }
+
+        .btn-prev {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        footer {
+            background-color: #0c3064;
+            color: #fff;
+            padding: 60px 0 0;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        
+        .footer-column p {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+        
+        .footer-social {
+            display: flex;
+            margin-top: 20px;
+        }
+        
+        .footer-social a {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .footer-social a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .footer-bottom {
+            background-color: #092550;
+            padding: 20px 0;
+            text-align: center;
+        }
+        
+        .footer-bottom p {
+            margin: 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    
+    <header>
+        <div class="top-header">
+            <div class="container">
+                <div class="contact-info">
+                    <span>Email: info@universityofexcellence.edu</span>
+                    <span>|</span>
+                    <span>Phone: +44 (0)123 456 7890</span>
+                </div>
+                <div class="social-links">
+                    <a href="#">Facebook</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">Instagram</a>
+                    <a href="#">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+        <div class="main-header">
+            <div class="container">
+                <a href="#" class="logo">University of Excellence</a>
+                <nav class="desktop-menu">
+                    <ul>
+                        <li><a href="./index.html">Home</a></li>
+                        <li>
+                            <a href="./about.html">About</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="./about/history.html">Our History</a></li>
+                                <li><a href="./about/leadership.html">Leadership</a></li>
+                                <li><a href="./about/mission.html">Mission & Vision</a></li>
+                                <li><a href="./about/campus-life.html">Campus Life</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="./admissions/international.html">Admissions</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="./admissions/undergraduate.html">Undergraduate</a></li>
+                                <li><a href="./admissions/postgraduate.html">Postgraduate</a></li>
+                                <li><a href="./admissions/international.html">International</a></li>
+                                <li><a href="./admissions/scholarships.html">Scholarships</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Research</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="./research/areas.html">Research Areas</a></li>
+                                <li><a href="./research/facilities.html">Facilities</a></li>
+                                <li><a href="./research/publications.html">Publications</a></li>
+                                <li><a href="./research/partnerships.html">Partnerships</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Courses</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="./courses/undergraduate.html">Undergraduate Courses</a></li>
+                                <li><a href="./courses/postgraduate.html">Postgraduate Courses</a></li>
+                                <li><a href="./courses/short-courses.html">Short Courses</a></li>
+                                <li><a href="./courses/distance-learning.html">Distance Learning</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="./student-life.html">Student Life</a></li>
+                        <li><a href="./contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="header-buttons">
+                    <button class="search-icon">Search</button>
+                    <button class="login-btn">Login</button>
+                    <button class="menu-toggle">Menu</button>
+                </div>
+                <nav class="mobile-menu">
+                    <ul>
+                        <li><a href="./index.html" class="active">Home</a></li>
+                        <li><a href="./about.html">About</a></li>
+                        <li><a href="./admissions/international.html">Admissions</a></li>
+                        <li><a href="./research/areas.html">Research</a></li>
+                        <li><a href="./courses/distance-learning.html">Courses</a></li>
+                        <li><a href="./student-life.html">Student Life</a></li>
+                        <li><a href="./contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <!-- Hero Section -->
+    <section class="page-hero">
+        <div class="container">
+            <h1>Admission Application</h1>
+            <p>Begin Your Journey with University of Excellence</p>
+        </div>
+    </section>
+
+    <!-- Admission Form Section -->
+    <section class="admission-section">
+        <div class="container">
+            <div class="admission-form-container">
+                <div class="form-progress">
+                    <div class="progress-line"></div>
+                    <div class="progress-step active">
+                        <div class="step-number">1</div>
+                        <span>Personal Details</span>
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-number">2</div>
+                        <span>Academic History</span>
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-number">3</div>
+                        <span>Program Selection</span>
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-number">4</div>
+                        <span>Documents</span>
+                    </div>
+                </div>
+
+                <form id="admissionForm">
+                    <!-- Personal Details Section -->
+                    <div class="form-section active">
+                        <h2>Personal Details</h2>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>First Name *</label>
+                                <input type="text" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Last Name *</label>
+                                <input type="text" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Date of Birth *</label>
+                                <input type="date" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Gender *</label>
+                                <select required>
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- More personal details fields -->
+                    </div>
+
+                    <!-- Academic History Section -->
+                    <div class="form-section">
+                        <h2>Academic History</h2>
+                        <div class="form-group">
+                            <label>Previous Institution *</label>
+                            <input type="text" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Qualification *</label>
+                                <select required>
+                                    <option value="">Select Qualification</option>
+                                    <option value="high-school">High School</option>
+                                    <option value="bachelors">Bachelor's Degree</option>
+                                    <option value="masters">Master's Degree</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Year of Completion *</label>
+                                <input type="number" min="1900" max="2025" required>
+                            </div>
+                        </div>
+                        <!-- More academic fields -->
+                    </div>
+
+                    <!-- Program Selection Section -->
+                    <div class="form-section">
+                        <h2>Program Selection</h2>
+                        <div class="form-group">
+                            <label>Desired Program *</label>
+                            <select required>
+                                <option value="">Select Program</option>
+                                <option value="cs">Computer Science</option>
+                                <option value="business">Business Administration</option>
+                                <option value="engineering">Engineering</option>
+                            </select>
+                        </div>
+                        <!-- More program selection fields -->
+                    </div>
+
+                    <!-- Documents Section -->
+                    <div class="form-section">
+                        <h2>Required Documents</h2>
+                        <div class="form-group">
+                            <label>Academic Transcripts *</label>
+                            <div class="file-upload">
+                                <input type="file" accept=".pdf,.doc,.docx" required>
+                                <p>Drag and drop files here or click to browse</p>
+                            </div>
+                        </div>
+                        <!-- More document upload fields -->
+                    </div>
+
+                    <div class="form-buttons">
+                        <button type="button" class="btn btn-prev" style="display: none;">Previous</button>
+                        <button type="button" class="btn btn-next">Next</button>
+                        <button type="submit" class="btn btn-submit" style="display: none;">Submit Application</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+      <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>University of Excellence</h3>
+                    <p>Shaping the future through education, research, and innovation.</p>
+                    <div class="footer-social">
+                        <a href="#">F</a>
+                        <a href="#">T</a>
+                        <a href="#">I</a>
+                        <a href="#">L</a>
+                        <a href="#">Y</a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="./about.html">About Us</a></li>
+                        <li><a href="./admission.html">Admissions</a></li>
+                        <li><a href="./research/areas.html">Research</a></li>
+                        <li><a href="./courses/distance-learning.html">Courses</a></li>
+                        <li><a href="./student-life.html">Student Life</a></li>
+                        <li><a href="./contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <p>123 University Avenue<br>Excellence City, EX1 2YZ<br>United Kingdom</p>
+                    <p>Email: info@universityofexcellence.edu<br>Phone: +44 (0)123 456 7890</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to our newsletter for the latest updates.</p>
+                    <form>
+                        <input type="email" placeholder="Your Email" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                        <button type="submit" class="btn" style="width: 100%;">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2025 University of Excellence. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const formSections = document.querySelectorAll('.form-section');
+        const progressSteps = document.querySelectorAll('.progress-step');
+        const prevBtn = document.querySelector('.btn-prev');
+        const nextBtn = document.querySelector('.btn-next');
+        const submitBtn = document.querySelector('.btn-submit');
+        let currentStep = 0;
+
+        function updateForm() {
+            formSections.forEach(section => section.classList.remove('active'));
+            formSections[currentStep].classList.add('active');
+
+            progressSteps.forEach((step, idx) => {
+                step.classList.toggle('active', idx <= currentStep);
+            });
+
+            prevBtn.style.display = currentStep > 0 ? 'block' : 'none';
+            nextBtn.style.display = currentStep < formSections.length - 1 ? 'block' : 'none';
+            submitBtn.style.display = currentStep === formSections.length - 1 ? 'block' : 'none';
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (currentStep < formSections.length - 1) {
+                currentStep++;
+                updateForm();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentStep > 0) {
+                currentStep--;
+                updateForm();
+            }
+        });
+
+        document.getElementById('admissionForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Add form submission logic here
+            alert('Application submitted successfully!');
+        });
+    </script>
+</body>
+</html>
