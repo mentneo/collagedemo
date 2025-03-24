@@ -86,8 +86,8 @@
             position: absolute;
             top: 100%;
             left: 0;
-            background-color: #fff;
-            width: 220px;
+            background-color: #d9bebe;
+            width: 500px;
             border-radius: 8px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             opacity: 0;
@@ -471,21 +471,25 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label>First Name *</label>
-                                <input type="text" required>
+                                <input type="text" id="firstName" required>
                             </div>
                             <div class="form-group">
                                 <label>Last Name *</label>
-                                <input type="text" required>
+                                <input type="text" id="lastName" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Date of Birth *</label>
-                                <input type="date" required>
+                                <input type="date" id="dob" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Mobile Number *</label>
+                                <input type="tel" id="mobileNumber" required pattern="[0-9]{10}">
                             </div>
                             <div class="form-group">
                                 <label>Gender *</label>
-                                <select required>
+                                <select id="gender" required>
                                     <option value="">Select Gender</option>
                                     <option value="male">Male</option>
                                     <option value="female">Female</option>
@@ -501,12 +505,12 @@
                         <h2>Academic History</h2>
                         <div class="form-group">
                             <label>Previous Institution *</label>
-                            <input type="text" required>
+                            <input type="text" id="previousInstitution" required>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Qualification *</label>
-                                <select required>
+                                <select id="qualification" required>
                                     <option value="">Select Qualification</option>
                                     <option value="high-school">High School</option>
                                     <option value="bachelors">Bachelor's Degree</option>
@@ -515,7 +519,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Year of Completion *</label>
-                                <input type="number" min="1900" max="2025" required>
+                                <input type="number" id="yearOfCompletion" min="1900" max="2025" required>
                             </div>
                         </div>
                         <!-- More academic fields -->
@@ -526,27 +530,32 @@
                         <h2>Program Selection</h2>
                         <div class="form-group">
                             <label>Desired Program *</label>
-                            <select required>
+                            <select id="desiredProgram" required>
                                 <option value="">Select Program</option>
                                 <option value="cs">Computer Science</option>
                                 <option value="business">Business Administration</option>
                                 <option value="engineering">Engineering</option>
                             </select>
                         </div>
-                        <!-- More program selection fields -->
                     </div>
 
                     <!-- Documents Section -->
                     <div class="form-section">
                         <h2>Required Documents</h2>
                         <div class="form-group">
-                            <label>Academic Transcripts *</label>
+                            <label>Profile Photo *</label>
                             <div class="file-upload">
-                                <input type="file" accept=".pdf,.doc,.docx" required>
-                                <p>Drag and drop files here or click to browse</p>
+                                <input type="file" id="profilePhoto" accept="image/*" required>
+                                <p>Upload your recent photograph</p>
                             </div>
                         </div>
-                        <!-- More document upload fields -->
+                        <div class="form-group">
+                            <label>Academic Transcripts *</label>
+                            <div class="file-upload">
+                                <input type="file" id="transcripts" accept=".pdf,.doc,.docx" required>
+                                <p>Upload your transcripts</p>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-buttons">
@@ -608,7 +617,46 @@
         </div>
     </footer>
 
-    <script>
+    <!-- Update Firebase SDK imports -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyApWBaqp-_cwm3Mnkm4cnmgyoqIP85ZK-w",
+            authDomain: "schoolreports-f3fd6.firebaseapp.com",
+            projectId: "schoolreports-f3fd6",
+            storageBucket: "schoolreports-f3fd6.firebasestorage.app",
+            messagingSenderId: "652493010196",
+            appId: "1:652493010196:web:6cef36abb54c8a1587fe01",
+            measurementId: "G-F5Q8Z93P83"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Cloudinary configuration
+        const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dp8bfdbab/image/upload';
+        const CLOUDINARY_PRESET = 'cryptchat';
+
+        async function uploadToCloudinary(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', CLOUDINARY_PRESET);
+
+            const response = await fetch(CLOUDINARY_URL, {
+                method: 'POST',
+                body: formData
+            });
+            
+            const data = await response.json();
+            return data.secure_url;
+        }
+
+        // Form handling code
         const formSections = document.querySelectorAll('.form-section');
         const progressSteps = document.querySelectorAll('.progress-step');
         const prevBtn = document.querySelector('.btn-prev');
@@ -617,6 +665,7 @@
         let currentStep = 0;
 
         function updateForm() {
+            // ...existing updateForm code...
             formSections.forEach(section => section.classList.remove('active'));
             formSections[currentStep].classList.add('active');
 
@@ -630,6 +679,7 @@
         }
 
         nextBtn.addEventListener('click', () => {
+            // ...existing nextBtn code...
             if (currentStep < formSections.length - 1) {
                 currentStep++;
                 updateForm();
@@ -637,16 +687,50 @@
         });
 
         prevBtn.addEventListener('click', () => {
+            // ...existing prevBtn code...
             if (currentStep > 0) {
                 currentStep--;
                 updateForm();
             }
         });
 
-        document.getElementById('admissionForm').addEventListener('submit', (e) => {
+        document.getElementById('admissionForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            // Add form submission logic here
-            alert('Application submitted successfully!');
+            
+            try {
+                // Upload image to Cloudinary first
+                const profilePhoto = document.getElementById('profilePhoto').files[0];
+                const photoUrl = await uploadToCloudinary(profilePhoto);
+
+                const formData = {
+                    personalDetails: {
+                        firstName: document.getElementById('firstName').value,
+                        lastName: document.getElementById('lastName').value,
+                        dateOfBirth: document.getElementById('dob').value,
+                        gender: document.getElementById('gender').value,
+                        mobileNumber: document.getElementById('mobileNumber').value,
+                        profilePhoto: photoUrl
+                    },
+                    academicHistory: {
+                        previousInstitution: document.getElementById('previousInstitution').value,
+                        qualification: document.getElementById('qualification').value,
+                        yearOfCompletion: document.getElementById('yearOfCompletion').value,
+                    },
+                    programSelection: {
+                        desiredProgram: document.getElementById('desiredProgram').value,
+                    },
+                    timestamp: serverTimestamp()
+                };
+
+                await addDoc(collection(db, 'admissions'), formData);
+                alert('Application submitted successfully!');
+                document.getElementById('admissionForm').reset();
+                currentStep = 0;
+                updateForm();
+            } catch (error) {
+                console.error("Error submitting application: ", error);
+                alert('Error submitting application. Please try again.');
+            }
         });
     </script>
 </body>
