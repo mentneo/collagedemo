@@ -109,6 +109,38 @@
         .btn-delete {
             background-color: #dc3545;
         }
+
+        .search-section {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .filter-select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-width: 200px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        .search-box input {
+            flex: 1;
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -132,6 +164,25 @@
         <div class="dashboard-header">
             <button class="btn" id="logoutBtn">Logout</button>
             <button class="btn" onclick="showAddForm()">Add New Application</button>
+        </div>
+
+        <!-- Add search section -->
+        <div class="search-section">
+            <div class="search-box">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    class="search-input" 
+                    placeholder="Search by name, mobile, or program..."
+                >
+                <button class="btn" onclick="clearSearch()">Clear</button>
+            </div>
+            <select id="filterProgram" class="filter-select">
+                <option value="">All Programs</option>
+                <option value="cs">Computer Science</option>
+                <option value="business">Business Administration</option>
+                <option value="engineering">Engineering</option>
+            </select>
         </div>
         
         <!-- Add/Edit Form Modal -->
@@ -225,6 +276,10 @@
         let currentDocId = null;
         const modal = document.getElementById('applicationModal');
         const applicationForm = document.getElementById('applicationForm');
+
+        let applications = []; // Store all applications
+        const searchInput = document.getElementById('searchInput');
+        const filterProgram = document.getElementById('filterProgram');
 
         // Handle login
         adminLoginForm.addEventListener('submit', (e) => {
@@ -334,32 +389,82 @@
                 const q = query(applicationsRef, orderBy('timestamp', 'desc'));
                 const querySnapshot = await getDocs(q);
                 
-                applicationsData.innerHTML = '';
+                applications = []; // Reset applications array
                 querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const row = `
-                        <tr>
-                            <td><img src="${data.personalDetails.profilePhoto}" alt="Profile" style="width: 50px; height: 50px; border-radius: 50%;"></td>
-                            <td>${data.timestamp ? new Date(data.timestamp.toDate()).toLocaleDateString() : 'N/A'}</td>
-                            <td>${data.personalDetails.firstName} ${data.personalDetails.lastName}</td>
-                            <td>${data.personalDetails.mobileNumber}</td>
-                            <td>${data.programSelection.desiredProgram}</td>
-                            <td>${data.academicHistory?.previousInstitution || 'N/A'}</td>
-                            <td>${data.academicHistory?.qualification || 'N/A'}</td>
-                            <td>
-                                <button class="btn btn-edit" onclick="editApplication('${doc.id}')">Edit</button>
-                                <button class="btn btn-delete" onclick="deleteApplication('${doc.id}')">Delete</button>
-                                <button class="btn" onclick="viewApplication('${doc.id}')">View</button>
-                            </td>
-                        </tr>
-                    `;
-                    applicationsData.innerHTML += row;
+                    applications.push({ id: doc.id, ...doc.data() });
                 });
+                
+                renderApplications(applications);
             } catch (error) {
                 console.error("Error loading applications: ", error);
                 alert('Error loading applications');
             }
         }
+
+        // Add renderApplications function
+        function renderApplications(apps) {
+            applicationsData.innerHTML = '';
+            if (apps.length === 0) {
+                applicationsData.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center;">No applications found</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            apps.forEach((data) => {
+                const row = `
+                    <tr>
+                        <td><img src="${data.personalDetails.profilePhoto}" alt="Profile" style="width: 50px; height: 50px; border-radius: 50%;"></td>
+                        <td>${data.timestamp ? new Date(data.timestamp.toDate()).toLocaleDateString() : 'N/A'}</td>
+                        <td>${data.personalDetails.firstName} ${data.personalDetails.lastName}</td>
+                        <td>${data.personalDetails.mobileNumber}</td>
+                        <td>${data.programSelection.desiredProgram}</td>
+                        <td>${data.academicHistory?.previousInstitution || 'N/A'}</td>
+                        <td>${data.academicHistory?.qualification || 'N/A'}</td>
+                        <td>
+                            <button class="btn btn-edit" onclick="editApplication('${data.id}')">Edit</button>
+                            <button class="btn btn-delete" onclick="deleteApplication('${data.id}')">Delete</button>
+                            <button class="btn" onclick="viewApplication('${data.id}')">View</button>
+                        </td>
+                    </tr>
+                `;
+                applicationsData.innerHTML += row;
+            });
+        }
+
+        // Add search and filter functionality
+        function filterApplications() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const programFilter = filterProgram.value;
+            
+            const filtered = applications.filter(app => {
+                const searchMatch = 
+                    `${app.personalDetails.firstName} ${app.personalDetails.lastName}`.toLowerCase().includes(searchTerm) ||
+                    app.personalDetails.mobileNumber?.includes(searchTerm) ||
+                    app.programSelection.desiredProgram.toLowerCase().includes(searchTerm) ||
+                    app.academicHistory?.previousInstitution?.toLowerCase().includes(searchTerm);
+                
+                const programMatch = programFilter ? 
+                    app.programSelection.desiredProgram === programFilter : true;
+
+                return searchMatch && programMatch;
+            });
+
+            renderApplications(filtered);
+        }
+
+        // Clear search
+        window.clearSearch = function() {
+            searchInput.value = '';
+            filterProgram.value = '';
+            filterApplications();
+        };
+
+        // Add event listeners for search and filter
+        searchInput.addEventListener('input', filterApplications);
+        filterProgram.addEventListener('change', filterApplications);
 
         // Updated view details function
         window.viewApplication = async function(docId) {
